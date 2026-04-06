@@ -1,0 +1,28 @@
+services:
+  # Web Service for Spring Boot
+  - type: web
+    name: denko1-tracker
+    env: docker
+    plan: free
+    region: singapore # 日本から近いリージョンを選択
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: denko1-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: denko1-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: denko1-db
+          property: password
+
+databases:
+  # Managed PostgreSQL
+  - name: denko1-db
+    plan: free
+    region: singapore

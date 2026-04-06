@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Denko1 Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="container">
+    <header class="glass-panel header-flex">
+        <div>
+            <h1>第一種電気工事士 試験トラッカー</h1>
+            <p>ようこそ、<strong th:text="${username}"></strong> さん！</p>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="/record" class="btn btn-primary">＋ 新規記録をつける</a>
+            <a href="/logout" style="color: #f87171; text-decoration: none; font-size: 0.9rem;">ログアウト</a>
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        <!-- 弱点分析グラフ -->
+        <section class="glass-panel chart-section">
+            <h2>現在の弱点分析</h2>
+            <div th:if="${weakestCategory != 'データがありません'}">
+                <p class="weakness-alert">
+                    ⚠️ 現在の最優先復習項目: <strong th:text="${weakestCategory}"></strong>
+                </p>
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+            <div th:if="${weakestCategory == 'データがありません'}">
+                <p style="color: #94a3b8; padding: 2rem;">過去問の記録がありません。「新規記録をつける」からデータを入力してください。</p>
+            </div>
+        </section>
+
+        <section class="glass-panel table-section">
+            <h2>筆記試験スコア履歴</h2>
+            <table>
+                <tr><th>年度</th><th>挑戦</th><th>計算</th><th>記憶</th><th>図面</th><th>法令</th></tr>
+                <tr th:each="r : ${writtenRecords}">
+                    <td th:text="${r.examYear}"></td>
+                    <td th:text="${r.attemptNumber} + '回目'"></td>
+                    <td th:text="${r.calcScore}"></td>
+                    <td th:text="${r.memoryScore}"></td>
+                    <td th:text="${r.diagramScore}"></td>
+                    <td th:text="${r.lawScore}"></td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="glass-panel table-section">
+            <h2>技能試験タイム履歴</h2>
+            <table>
+                <tr><th>問題番号</th><th>挑戦</th><th>タイム</th><th>合否</th></tr>
+                <tr th:each="s : ${skillRecords}">
+                    <td th:text="'No.' + ${s.problemNumber}"></td>
+                    <td th:text="${s.attemptNumber} + '回目'"></td>
+                    <td th:text="${s.completionTimeMinutes} + ' 分'" th:classappend="${s.completionTimeMinutes <= 60 ? 'good-time' : 'over-time'}"></td>
+                    <td>
+                        <span th:text="${s.isPassed ? '合格' : '欠陥あり'}" th:class="${s.isPassed ? 'pass' : 'fail'}"></span>
+                    </td>
+                </tr>
+            </table>
+        </section>
+    </div>
+</div>
+
+<!-- Thymeleafで計算したデータをJavaScriptに渡してグラフを描画 -->
+<script th:if="${weakestCategory != 'データがありません'}" th:inline="javascript">
+    const labels = /*[[${chartLabels}]]*/ ['計算', '記憶', '図面', '法令'];
+    const dataPoints = /*[[${chartData}]]*/ [0, 0, 0, 0];
+
+    new Chart(document.getElementById('radarChart'), {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '最新の正答率(%)',
+                data: dataPoints,
+                backgroundColor: 'rgba(245, 158, 11, 0.2)', // アンバーカラー（現場の警告色イメージ）
+                borderColor: 'rgba(245, 158, 11, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(245, 158, 11, 1)'
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(255, 255, 255, 0.15)' },
+                    grid: { color: 'rgba(255, 255, 255, 0.15)' },
+                    pointLabels: { color: '#e2e8f0', font: { size: 14 } },
+                    ticks: { color: 'transparent', backdropColor: 'transparent', min: 0, max: 100 }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: '#e2e8f0' } }
+            }
+        }
+    });
+</script>
+</body>
+</html>

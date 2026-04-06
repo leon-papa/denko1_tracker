@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新規登録 - Denko1 Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container container-sm" style="margin-top: 5rem;">
+    <div class="glass-panel" style="text-align: center;">
+        <h1>新規アカウント作成</h1>
+        <p>第一種電気工事士合格への第一歩</p>
+        
+        <form th:action="@{/register}" th:object="${user}" method="post" style="margin-top: 2rem;">
+            <div class="form-group">
+                <label>ユーザー名</label>
+                <input type="text" th:field="*{username}" required autofocus>
+            </div>
+            <div class="form-group">
+                <label>パスワード</label>
+                <input type="password" th:field="*{password}" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">登録してはじめる</button>
+        </form>
+        
+        <p style="margin-top: 2rem;">
+            すでにアカウントをお持ちですか？ <a href="/login" style="color: var(--accent);">ログイン画面へ</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>
