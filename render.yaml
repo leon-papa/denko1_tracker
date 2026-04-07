@@ -8,10 +8,18 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: RENDER_POSTGRES_URL
+      - key: RENDER_POSTGRES_HOST
         fromDatabase:
           name: denko1-db
-          property: connectionString
+          property: host
+      - key: RENDER_POSTGRES_PORT
+        fromDatabase:
+          name: denko1-db
+          property: port
+      - key: RENDER_POSTGRES_DB
+        fromDatabase:
+          name: denko1-db
+          property: database
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: denko1-db
