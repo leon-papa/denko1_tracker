@@ -115,7 +115,7 @@ public class WebController {
         sb.append("問題番号,回数,完成時間(分),合否\n");
         for (SkillExamRecord r : records) {
             sb.append(String.format("No.%d,%d,%d,%s\n",
-                r.getProblemNumber(), r.getAttemptNumber(), r.getCompletionTimeMinutes(), r.isPassed() ? "合格" : "欠陥あり"));
+                r.getProblemNumber(), r.getAttemptNumber(), r.getCompletionTimeMinutes(), r.getIsPassed() ? "合格" : "欠陥あり"));
         }
 
         return createCsvResponse(sb.toString(), "skill_exam_records.csv");
