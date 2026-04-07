@@ -39,7 +39,10 @@
         </section>
 
         <section class="glass-panel table-section">
-            <h2>筆記試験スコア履歴</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2>筆記試験スコア履歴</h2>
+                <a th:href="@{/download/written}" style="font-size: 0.8rem; color: var(--accent); text-decoration: none;">📥 CSV保存</a>
+            </div>
             <table>
                 <tr><th>年度</th><th>挑戦</th><th>計算</th><th>記憶</th><th>図面</th><th>法令</th></tr>
                 <tr th:each="r : ${writtenRecords}">
@@ -54,7 +57,10 @@
         </section>
 
         <section class="glass-panel table-section">
-            <h2>技能試験タイム履歴</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2>技能試験タイム履歴</h2>
+                <a th:href="@{/download/skill}" style="font-size: 0.8rem; color: var(--accent); text-decoration: none;">📥 CSV保存</a>
+            </div>
             <table>
                 <tr><th>問題番号</th><th>挑戦</th><th>タイム</th><th>合否</th></tr>
                 <tr th:each="s : ${skillRecords}">
