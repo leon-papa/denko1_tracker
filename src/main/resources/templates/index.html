@@ -15,7 +15,9 @@
         </div>
         <div style="display: flex; gap: 1rem; align-items: center;">
             <a href="/record" class="btn btn-primary">＋ 新規記録をつける</a>
-            <a href="/logout" style="color: #f87171; text-decoration: none; font-size: 0.9rem;">ログアウト</a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 0.9rem; padding: 0;">ログアウト</button>
+            </form>
         </div>
     </header>
 
