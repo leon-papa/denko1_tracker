@@ -10,5 +10,11 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# Run the app with production profile
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "-Dserver.port=${PORT:8080}", "app.jar"]
+# JVMフラグは -jar の前に置く。メモリ制限でRenderフリープラン(512MB)のOOMを防ぐ
+ENTRYPOINT ["java", \
+  "-Xmx256m", \
+  "-Xss256k", \
+  "-XX:MaxMetaspaceSize=192m", \
+  "-XX:+UseSerialGC", \
+  "-Dspring.profiles.active=prod", \
+  "-jar", "app.jar"]
