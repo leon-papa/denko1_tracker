@@ -68,9 +68,7 @@ public class WebController {
 
         model.addAttribute("writtenRecords", writtenRecords);
         model.addAttribute("skillRecords", skillRecords);
-        String displayName = (user.getDisplayName() != null && !user.getDisplayName().isBlank())
-            ? user.getDisplayName() : user.getUsername();
-        model.addAttribute("username", displayName);
+        model.addAttribute("username", user.getUsername());
         
         return "index";
     }
@@ -190,20 +188,10 @@ public class WebController {
     @GetMapping("/settings")
     public String showSettings(Authentication auth, Model model) {
         User user = userRepository.findByUsername(auth.getName()).orElseThrow();
-        String displayName = (user.getDisplayName() != null && !user.getDisplayName().isBlank())
-            ? user.getDisplayName() : user.getUsername();
-        model.addAttribute("displayName", displayName);
         model.addAttribute("username", user.getUsername());
         return "settings";
     }
 
-    @PostMapping("/settings/display-name")
-    public String updateDisplayName(@RequestParam String displayName, Authentication auth) {
-        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
-        user.setDisplayName(displayName.isBlank() ? null : displayName.trim());
-        userRepository.save(user);
-        return "redirect:/settings?nameUpdated";
-    }
 
     @PostMapping("/settings/password")
     public String updatePassword(@RequestParam String currentPassword,

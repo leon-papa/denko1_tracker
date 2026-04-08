@@ -14,9 +14,6 @@
     </header>
 
     <!-- 完了・エラーメッセージ -->
-    <div th:if="${param.nameUpdated}" class="alert-success glass-panel">
-        ✅ 表示名を更新しました。
-    </div>
     <div th:if="${param.passwordUpdated}" class="alert-success glass-panel">
         ✅ パスワードを変更しました。
     </div>
@@ -24,22 +21,6 @@
         ❌ 現在のパスワードが正しくありません。
     </div>
 
-    <!-- 表示名の変更 -->
-    <section class="glass-panel">
-        <h2>👤 表示名の変更</h2>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">
-            ダッシュボードの「ようこそ、〇〇さん！」に表示される名前を変更できます。<br>
-            ログインIDは変わりません。
-        </p>
-        <form th:action="@{/settings/display-name}" method="post">
-            <div class="form-group">
-                <label>新しい表示名</label>
-                <input type="text" name="displayName" th:value="${displayName}"
-                       placeholder="例：たろう" maxlength="30" required>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">表示名を更新する</button>
-        </form>
-    </section>
 
     <!-- パスワードの変更 -->
     <section class="glass-panel" style="margin-top: 2rem;">
