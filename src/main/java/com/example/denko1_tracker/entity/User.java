@@ -18,9 +18,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private String displayName;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WrittenExamRecord> writtenExamRecords;
 
