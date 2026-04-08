@@ -2,6 +2,7 @@ package com.example.denko1_tracker.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,4 +17,13 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Column
+    private String displayName;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WrittenExamRecord> writtenExamRecords;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SkillExamRecord> skillExamRecords;
 }

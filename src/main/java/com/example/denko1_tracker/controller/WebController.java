@@ -13,13 +13,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -39,6 +42,9 @@ public class WebController {
 
     @Autowired
     private WeaknessAnalysisService analysisService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -62,7 +68,9 @@ public class WebController {
 
         model.addAttribute("writtenRecords", writtenRecords);
         model.addAttribute("skillRecords", skillRecords);
-        model.addAttribute("username", user.getUsername());
+        String displayName = (user.getDisplayName() != null && !user.getDisplayName().isBlank())
+            ? user.getDisplayName() : user.getUsername();
+        model.addAttribute("username", displayName);
         
         return "index";
     }
@@ -175,5 +183,48 @@ public class WebController {
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
             .contentType(MediaType.parseMediaType("text/csv"))
             .body(data);
+    }
+
+    // ===== ユーザー設定 =====
+
+    @GetMapping("/settings")
+    public String showSettings(Authentication auth, Model model) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        String displayName = (user.getDisplayName() != null && !user.getDisplayName().isBlank())
+            ? user.getDisplayName() : user.getUsername();
+        model.addAttribute("displayName", displayName);
+        model.addAttribute("username", user.getUsername());
+        return "settings";
+    }
+
+    @PostMapping("/settings/display-name")
+    public String updateDisplayName(@RequestParam String displayName, Authentication auth) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        user.setDisplayName(displayName.isBlank() ? null : displayName.trim());
+        userRepository.save(user);
+        return "redirect:/settings?nameUpdated";
+    }
+
+    @PostMapping("/settings/password")
+    public String updatePassword(@RequestParam String currentPassword,
+                                 @RequestParam String newPassword,
+                                 Authentication auth, Model model) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            return "redirect:/settings?passwordError";
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return "redirect:/settings?passwordUpdated";
+    }
+
+    @PostMapping("/settings/delete-account")
+    public String deleteAccount(Authentication auth,
+                                jakarta.servlet.http.HttpServletRequest request) throws Exception {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        userRepository.delete(user);
+        SecurityContextHolder.clearContext();
+        request.getSession().invalidate();
+        return "redirect:/login?accountDeleted";
     }
 }
