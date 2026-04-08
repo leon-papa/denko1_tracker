@@ -20,8 +20,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    CustomUserDetailsService userDetailsService) throws Exception {
-        // DaoAuthenticationProviderを明示的に設定
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
+        // DaoAuthenticationProviderを正しく初期化
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         http
