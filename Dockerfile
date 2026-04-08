@@ -10,11 +10,11 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# JVMフラグは -jar の前に置く。メモリ制限でRenderフリープラン(512MB)のOOMを防ぐ
+# Renderのメモリ制限(512MB)に合わせつつ、ポートを確実に指定
+# MaxRAMPercentage=75.0 (約380MB) をJavaに割り当て、残りをOSに
 ENTRYPOINT ["java", \
-  "-Xmx256m", \
-  "-Xss256k", \
-  "-XX:MaxMetaspaceSize=192m", \
-  "-XX:+UseSerialGC", \
-  "-Dspring.profiles.active=prod", \
-  "-jar", "app.jar"]
+    "-XX:MaxRAMPercentage=75.0", \
+    "-XX:+UseSerialGC", \
+    "-Dspring.profiles.active=prod", \
+    "-Dserver.port=${PORT}", \
+    "-jar", "app.jar"]
