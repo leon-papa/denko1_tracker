@@ -43,10 +43,9 @@ public class WebController {
     @GetMapping("/")
     public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
-        Long userId = user.getId();
 
-        List<WrittenExamRecord> writtenRecords = writtenExamRecordRepository.findByUserIdOrderByExamYearAscAttemptNumberAsc(userId);
-        List<SkillExamRecord> skillRecords = skillExamRecordRepository.findByUserIdOrderByProblemNumberAscAttemptNumberAsc(userId);
+        List<WrittenExamRecord> writtenRecords = writtenExamRecordRepository.findByUserOrderByExamYearAscAttemptNumberAsc(user);
+        List<SkillExamRecord> skillRecords = skillExamRecordRepository.findByUserOrderByProblemNumberAscAttemptNumberAsc(user);
 
         if (!writtenRecords.isEmpty()) {
             WrittenExamRecord latestRecord = writtenRecords.get(writtenRecords.size() - 1);
@@ -78,12 +77,12 @@ public class WebController {
     @PostMapping("/record/written")
     public String saveWritten(@AuthenticationPrincipal UserDetails userDetails, WrittenExamRecord record) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
-        record.setUserId(user.getId());
+        record.setUser(user);
         writtenExamRecordRepository.save(record);
         return "redirect:/";
     }
 
-    @PostMapping("/saveSkill")
+    @PostMapping("/record/skill")
     public String saveSkill(@ModelAttribute SkillExamRecord record, Authentication auth) {
         User user = userRepository.findByUsername(auth.getName()).orElseThrow();
         record.setUser(user);
@@ -116,7 +115,7 @@ public class WebController {
     @GetMapping("/download/written")
     public ResponseEntity<byte[]> downloadWrittenCsv(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
-        List<WrittenExamRecord> records = writtenExamRecordRepository.findByUserIdOrderByExamYearAscAttemptNumberAsc(user.getId());
+        List<WrittenExamRecord> records = writtenExamRecordRepository.findByUserOrderByExamYearAscAttemptNumberAsc(user);
 
         StringBuilder sb = new StringBuilder();
         // UTF-8 BOM for Excel
@@ -133,7 +132,7 @@ public class WebController {
     @GetMapping("/download/skill")
     public ResponseEntity<byte[]> downloadSkillCsv(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
-        List<SkillExamRecord> records = skillExamRecordRepository.findByUserIdOrderByProblemNumberAscAttemptNumberAsc(user.getId());
+        List<SkillExamRecord> records = skillExamRecordRepository.findByUserOrderByProblemNumberAscAttemptNumberAsc(user);
 
         StringBuilder sb = new StringBuilder();
         sb.append("\uFEFF");
