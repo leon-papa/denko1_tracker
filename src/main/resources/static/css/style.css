@@ -145,24 +145,26 @@ th { color: var(--text-muted); font-size: 0.9rem; font-weight: normal;}
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     body {
-        padding: 1rem 0.5rem; /* Reduce overall margins on mobile */
+        padding: 0.5rem 0.25rem; /* Drastically reduce side margins */
     }
 
-    .container {
+    .container, .container-sm {
+        max-width: 100%;
         padding-left: 0;
         padding-right: 0;
+        margin-top: 1rem !important; /* Override large desktop margins */
     }
 
     .glass-panel {
-        padding: 1.25rem;
-        margin-bottom: 1rem;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
         border-radius: 12px;
     }
 
     .header-flex {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 0.75rem;
     }
 
     .dashboard-grid {
@@ -176,11 +178,19 @@ th { color: var(--text-muted); font-size: 0.9rem; font-weight: normal;}
     }
 
     h1 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+    }
+
+    h2 {
+        font-size: 1.1rem;
     }
 
     .btn {
-        width: 100%; /* Make buttons full width on mobile */
+        width: 100%; /* Make buttons full width on mobile for easy tapping */
         box-sizing: border-box;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr; /* Stack form inputs on mobile */
     }
 }
