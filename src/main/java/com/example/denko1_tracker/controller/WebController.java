@@ -80,11 +80,33 @@ public class WebController {
         return "redirect:/";
     }
 
-    @PostMapping("/record/skill")
-    public String saveSkill(@AuthenticationPrincipal UserDetails userDetails, SkillExamRecord record) {
-        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
-        record.setUserId(user.getId());
+    @PostMapping("/saveSkill")
+    public String saveSkill(@ModelAttribute SkillExamRecord record, Authentication auth) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        record.setUser(user);
         skillExamRecordRepository.save(record);
+        return "redirect:/";
+    }
+
+    @PostMapping("/written/delete/{id}")
+    public String deleteWrittenRecord(@PathVariable Long id, Authentication auth) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        writtenExamRecordRepository.findById(id).ifPresent(record -> {
+            if (record.getUser().getId().equals(user.getId())) {
+                writtenExamRecordRepository.delete(record);
+            }
+        });
+        return "redirect:/";
+    }
+
+    @PostMapping("/skill/delete/{id}")
+    public String deleteSkillRecord(@PathVariable Long id, Authentication auth) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        skillExamRecordRepository.findById(id).ifPresent(record -> {
+            if (record.getUser().getId().equals(user.getId())) {
+                skillExamRecordRepository.delete(record);
+            }
+        });
         return "redirect:/";
     }
 

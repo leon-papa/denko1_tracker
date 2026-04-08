@@ -45,7 +45,7 @@
                 <a th:href="@{/download/written}" style="font-size: 0.8rem; color: var(--accent); text-decoration: none;">📥 CSV保存</a>
             </div>
             <table>
-                <tr><th>年度</th><th>挑戦</th><th>計算</th><th>記憶</th><th>図面</th><th>法令</th></tr>
+                <tr><th>年度</th><th>挑戦</th><th>計算</th><th>記憶</th><th>図面</th><th>法令</th><th>操作</th></tr>
                 <tr th:each="r : ${writtenRecords}">
                     <td th:text="${r.examYear}"></td>
                     <td th:text="${r.attemptNumber} + '回目'"></td>
@@ -53,6 +53,11 @@
                     <td th:text="${r.memoryScore}"></td>
                     <td th:text="${r.diagramScore}"></td>
                     <td th:text="${r.lawScore}"></td>
+                    <td>
+                        <form th:action="@{/written/delete/{id}(id=${r.id})}" method="post" onsubmit="return confirm('この記録を削除してもよろしいですか？');">
+                            <button type="submit" class="delete-btn" title="削除">🗑️</button>
+                        </form>
+                    </td>
                 </tr>
             </table>
         </section>
@@ -63,13 +68,18 @@
                 <a th:href="@{/download/skill}" style="font-size: 0.8rem; color: var(--accent); text-decoration: none;">📥 CSV保存</a>
             </div>
             <table>
-                <tr><th>問題番号</th><th>挑戦</th><th>タイム</th><th>合否</th></tr>
+                <tr><th>問題番号</th><th>挑戦</th><th>タイム</th><th>合否</th><th>操作</th></tr>
                 <tr th:each="s : ${skillRecords}">
                     <td th:text="'No.' + ${s.problemNumber}"></td>
                     <td th:text="${s.attemptNumber} + '回目'"></td>
                     <td th:text="${s.completionTimeMinutes} + ' 分'" th:classappend="${s.completionTimeMinutes <= 60 ? 'good-time' : 'over-time'}"></td>
                     <td>
                         <span th:text="${s.isPassed ? '合格' : '欠陥あり'}" th:class="${s.isPassed ? 'pass' : 'fail'}"></span>
+                    </td>
+                    <td>
+                        <form th:action="@{/skill/delete/{id}(id=${s.id})}" method="post" onsubmit="return confirm('この記録を削除してもよろしいですか？');">
+                            <button type="submit" class="delete-btn" title="削除">🗑️</button>
+                        </form>
                     </td>
                 </tr>
             </table>
