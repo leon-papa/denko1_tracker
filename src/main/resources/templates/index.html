@@ -53,8 +53,9 @@
                     <td th:text="${r.memoryScore}"></td>
                     <td th:text="${r.diagramScore}"></td>
                     <td th:text="${r.lawScore}"></td>
-                    <td>
-                        <form th:action="@{/written/delete/{id}(id=${r.id})}" method="post" onsubmit="return confirm('この記録を削除してもよろしいですか？');">
+                    <td style="white-space: nowrap;">
+                        <a th:href="@{/written/edit/{id}(id=${r.id})}" class="edit-btn" title="編集">✏️</a>
+                        <form th:action="@{/written/delete/{id}(id=${r.id})}" method="post" onsubmit="return confirm('この記録を削除してもよろしいですか？');" style="display:inline;">
                             <button type="submit" class="delete-btn" title="削除">🗑️</button>
                         </form>
                     </td>
@@ -76,8 +77,9 @@
                     <td>
                         <span th:text="${s.isPassed ? '合格' : '欠陥あり'}" th:class="${s.isPassed ? 'pass' : 'fail'}"></span>
                     </td>
-                    <td>
-                        <form th:action="@{/skill/delete/{id}(id=${s.id})}" method="post" onsubmit="return confirm('この記録を削除してもよろしいですか？');">
+                    <td style="white-space: nowrap;">
+                        <a th:href="@{/skill/edit/{id}(id=${s.id})}" class="edit-btn" title="編集">✏️</a>
+                        <form th:action="@{/skill/delete/{id}(id=${s.id})}" method="post" onsubmit="return confirm('この記録を削除してもよろしいですか？');" style="display:inline;">
                             <button type="submit" class="delete-btn" title="削除">🗑️</button>
                         </form>
                     </td>

@@ -74,6 +74,30 @@ public class WebController {
         return "record";
     }
 
+    @GetMapping("/written/edit/{id}")
+    public String showEditWrittenForm(@PathVariable Long id, Authentication auth, Model model) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        WrittenExamRecord record = writtenExamRecordRepository.findById(id)
+            .filter(r -> r.getUser().getId().equals(user.getId()))
+            .orElseThrow();
+        model.addAttribute("writtenRecord", record);
+        model.addAttribute("skillRecord", new SkillExamRecord());
+        model.addAttribute("editMode", "written");
+        return "record";
+    }
+
+    @GetMapping("/skill/edit/{id}")
+    public String showEditSkillForm(@PathVariable Long id, Authentication auth, Model model) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        SkillExamRecord record = skillExamRecordRepository.findById(id)
+            .filter(r -> r.getUser().getId().equals(user.getId()))
+            .orElseThrow();
+        model.addAttribute("writtenRecord", new WrittenExamRecord());
+        model.addAttribute("skillRecord", record);
+        model.addAttribute("editMode", "skill");
+        return "record";
+    }
+
     @PostMapping("/record/written")
     public String saveWritten(@AuthenticationPrincipal UserDetails userDetails, WrittenExamRecord record) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();

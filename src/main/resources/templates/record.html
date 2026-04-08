@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新規記録をつける - Denko1 Tracker</title>
+    <title th:text="${editMode != null} ? '記録の編集 - Denko1 Tracker' : '新規記録をつける - Denko1 Tracker'">記録 - Denko1 Tracker</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <div class="container container-sm">
     <header class="glass-panel header-flex">
-        <h1>新規記録をつける</h1>
+        <h1 th:text="${editMode != null} ? '📝 記録の編集' : '📝 新規記録をつける'">記録をつける</h1>
         <a href="/" class="btn" style="background: rgba(255,255,255,0.1); color: white;">← 戻る</a>
     </header>
 
-    <section class="glass-panel">
+    <!-- 筆記試験フォーム（編集モードが 'skill' の場合は非表示） -->
+    <section class="glass-panel" th:if="${editMode == null or editMode == 'written'}">
         <h2>📝 筆記試験（過去問）を記録</h2>
         <form th:action="@{/record/written}" th:object="${writtenRecord}" method="post">
+            <input type="hidden" th:field="*{id}">
             <div class="form-group">
                 <label>過去問の年度 (例: 2023)</label>
                 <input type="number" th:field="*{examYear}" required>
@@ -47,13 +49,16 @@
                     <input type="number" th:field="*{lawScore}" required placeholder="得点を入力">
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">筆記試験の記録を保存</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%;"
+                th:text="${editMode == 'written'} ? '変更を保存する' : '筆記試験の記録を保存'">保存</button>
         </form>
     </section>
 
-    <section class="glass-panel" style="margin-top: 2rem;">
+    <!-- 技能試験フォーム（編集モードが 'written' の場合は非表示） -->
+    <section class="glass-panel" th:if="${editMode == null or editMode == 'skill'}" style="margin-top: 2rem;">
         <h2>🛠️ 技能試験（公表問題）を記録</h2>
         <form th:action="@{/record/skill}" th:object="${skillRecord}" method="post">
+            <input type="hidden" th:field="*{id}">
             <div class="form-group">
                 <label>公表問題番号 (No.1〜10)</label>
                 <input type="number" th:field="*{problemNumber}" min="1" max="10" required>
@@ -73,7 +78,8 @@
                     <option value="false">不合格（重大欠陥あり / 時間切れ）</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">技能試験のタイムを保存</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%;"
+                th:text="${editMode == 'skill'} ? '変更を保存する' : '技能試験のタイムを保存'">保存</button>
         </form>
     </section>
 </div>
