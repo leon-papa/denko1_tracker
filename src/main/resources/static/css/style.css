@@ -141,3 +141,46 @@ th { color: var(--text-muted); font-size: 0.9rem; font-weight: normal;}
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem 0.5rem; /* Reduce overall margins on mobile */
+    }
+
+    .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .glass-panel {
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        border-radius: 12px;
+    }
+
+    .header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Stack dashboard items vertically */
+    }
+
+    .chart-container {
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .btn {
+        width: 100%; /* Make buttons full width on mobile */
+        box-sizing: border-box;
+    }
+}
