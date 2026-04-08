@@ -31,7 +31,7 @@
             ダッシュボードの「ようこそ、〇〇さん！」に表示される名前を変更できます。<br>
             ログインIDは変わりません。
         </p>
-        <form action="/settings/display-name" method="post">
+        <form th:action="@{/settings/display-name}" method="post">
             <div class="form-group">
                 <label>新しい表示名</label>
                 <input type="text" name="displayName" th:value="${displayName}"
@@ -44,7 +44,7 @@
     <!-- パスワードの変更 -->
     <section class="glass-panel" style="margin-top: 2rem;">
         <h2>🔒 パスワードの変更</h2>
-        <form action="/settings/password" method="post">
+        <form th:action="@{/settings/password}" method="post">
             <div class="form-group">
                 <label>現在のパスワード</label>
                 <input type="password" name="currentPassword" required placeholder="現在のパスワードを入力">
@@ -65,7 +65,7 @@
             アカウントを削除すると、すべての学習記録が完全に失われます。<br>
             この操作は取り消すことができません。
         </p>
-        <form action="/settings/delete-account" method="post"
+        <form th:action="@{/settings/delete-account}" method="post"
               onsubmit="return confirm('本当にアカウントを削除しますか？\nすべての学習データが完全に削除されます。この操作は元に戻せません。');">
             <button type="submit" class="btn"
                     style="width: 100%; background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.4);">
