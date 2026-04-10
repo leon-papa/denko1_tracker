@@ -150,7 +150,7 @@ public class WebController {
         StringBuilder sb = new StringBuilder();
         // UTF-8 BOM for Excel
         sb.append("\uFEFF");
-        sb.append("年度,回数,計算点,暗記点,図面点,法令点\n");
+        sb.append("年度,回数,計算,機器,施工図,法令\n");
         for (WrittenExamRecord r : records) {
             sb.append(String.format("%s,%d,%d,%d,%d,%d\n",
                 r.getExamYear(), r.getAttemptNumber(), r.getCalcScore(), r.getMemoryScore(), r.getDiagramScore(), r.getLawScore()));
