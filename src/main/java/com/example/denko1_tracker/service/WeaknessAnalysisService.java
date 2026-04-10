@@ -15,9 +15,9 @@ public class WeaknessAnalysisService {
 
     // 配点設定（満点）
     public static final int MAX_CALC_SCORE = 20;
-    public static final int MAX_MEMORY_SCORE = 30;
-    public static final int MAX_DIAGRAM_SCORE = 30;
-    public static final int MAX_LAW_SCORE = 20;
+    public static final int MAX_MEMORY_SCORE = 20;
+    public static final int MAX_DIAGRAM_SCORE = 50;
+    public static final int MAX_LAW_SCORE = 10;
 
     /**
      * 各カテゴリの正答率（%）を計算します。
@@ -25,10 +25,10 @@ public class WeaknessAnalysisService {
     public Map<String, Double> calculateAnalysis(WrittenExamRecord record) {
         Map<String, Double> analysis = new LinkedHashMap<>();
         
-        analysis.put("計算問題", calculatePercentage(record.getCalcScore(), MAX_CALC_SCORE));
-        analysis.put("記憶問題", calculatePercentage(record.getMemoryScore(), MAX_MEMORY_SCORE));
-        analysis.put("図面・回路", calculatePercentage(record.getDiagramScore(), MAX_DIAGRAM_SCORE));
-        analysis.put("法令等", calculatePercentage(record.getLawScore(), MAX_LAW_SCORE));
+        analysis.put("計算", calculatePercentage(record.getCalcScore(), MAX_CALC_SCORE));
+        analysis.put("機器", calculatePercentage(record.getMemoryScore(), MAX_MEMORY_SCORE));
+        analysis.put("施工図", calculatePercentage(record.getDiagramScore(), MAX_DIAGRAM_SCORE));
+        analysis.put("法令", calculatePercentage(record.getLawScore(), MAX_LAW_SCORE));
         
         return analysis;
     }

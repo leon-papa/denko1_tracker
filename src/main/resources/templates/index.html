@@ -46,7 +46,7 @@
                 <a th:href="@{/download/written}" style="font-size: 0.8rem; color: var(--accent); text-decoration: none;">📥 CSV保存</a>
             </div>
             <table>
-                <tr><th>年度</th><th>挑戦</th><th>計算</th><th>記憶</th><th>図面</th><th>法令</th><th>操作</th></tr>
+                <tr><th>年度</th><th>挑戦</th><th>計算</th><th>機器</th><th>施工図</th><th>法令</th><th>操作</th></tr>
                 <tr th:each="r : ${writtenRecords}">
                     <td th:text="${r.examYear}"></td>
                     <td th:text="${r.attemptNumber} + '回目'"></td>
@@ -92,7 +92,7 @@
 
 <!-- Thymeleafで計算したデータをJavaScriptに渡してグラフを描画 -->
 <script th:if="${weakestCategory != 'データがありません'}" th:inline="javascript">
-    const labels = /*[[${chartLabels}]]*/ ['計算', '記憶', '図面', '法令'];
+    const labels = /*[[${chartLabels}]]*/ ['計算', '機器', '施工図', '法令'];
     const dataPoints = /*[[${chartData}]]*/ [0, 0, 0, 0];
 
     new Chart(document.getElementById('radarChart'), {
