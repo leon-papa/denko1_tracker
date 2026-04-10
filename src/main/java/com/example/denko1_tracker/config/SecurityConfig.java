@@ -18,13 +18,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService) {
-        // DaoAuthenticationProviderをBeanとして正しく構築
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
+    // DaoAuthenticationProvider を明示的に Bean 定義しなくても、
+    // UserDetailsService と PasswordEncoder が Bean として存在すれば 
+    // Spring Security が自動的に構成してくれます。
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
