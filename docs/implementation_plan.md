@@ -32,7 +32,8 @@
 
 ## Phase 5: デプロイと運用性拡張 [完了]
 「実際の試験勉強で使いやすく、運用しやすくする」工程です。
-* **Render (PostgreSQL) への移行**: 
+* **Supabase (PostgreSQL) への移行**: 
+  * Render の IPv6 接続制限を回避するため、Supabase Connection Pooler (IPv4) を採用。
   * `EnvironmentPostProcessor` による JDBC URL の動的生成。
   * 本番環境用プロファイル（`application-prod.properties`）の整備。
 * **データの可搬性 (CSV Export)**: 
@@ -43,7 +44,7 @@
   * メディアクエリによるスマホ用レスポンシブ UI（余白・レイアウト）の構築。
   * スマホログイン時の 403 エラー（プロキシ経由の CSRF 対策）の解消。
 
-## Phase 6: 完全なCRUD対応とアカウント管理 [NEW / 進行中]
+## Phase 6: 完全なCRUD対応とアカウント管理 [完了]
 「ポートフォリオとしての完成度と実用性を極める」工程です。
 * **削除機能の実装**: 
   * 筆記試験レコードおよび技能試験レコードの個別削除。
