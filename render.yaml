@@ -8,29 +8,14 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: RENDER_POSTGRES_HOST
-        fromDatabase:
-          name: denko1-db
-          property: host
-      - key: RENDER_POSTGRES_PORT
-        fromDatabase:
-          name: denko1-db
-          property: port
-      - key: RENDER_POSTGRES_DB
-        fromDatabase:
-          name: denko1-db
-          property: database
-      - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: denko1-db
-          property: user
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: denko1-db
-          property: password
-
-databases:
-  # Managed PostgreSQL
-  - name: denko1-db
-    plan: free
-    region: singapore
+      # Database Connection (Supabase)
+      # 以下の変数はDashboard上の「手動入力」を優先するため、Blueprint同期時に既存の値を保持するよう設定
+      - key: DB_HOST
+      - key: DB_PORT
+        value: 5432
+      - key: DB_NAME
+        value: postgres
+      - key: DB_USER
+      - key: DB_PASSWORD
+      - key: PROJECT_ID
+        value: pmtdqluzjvmskotkywks
