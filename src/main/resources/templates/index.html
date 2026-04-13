@@ -114,7 +114,14 @@
                     angleLines: { color: 'rgba(255, 255, 255, 0.15)' },
                     grid: { color: 'rgba(255, 255, 255, 0.15)' },
                     pointLabels: { color: '#e2e8f0', font: { size: 14 } },
-                    ticks: { color: 'transparent', backdropColor: 'transparent', min: 0, max: 100 }
+                    ticks: { 
+                        color: 'rgba(255, 255, 255, 0.5)', 
+                        backdropColor: 'transparent', 
+                        stepSize: 20,
+                        font: { size: 10 }
+                    },
+                    min: 0,
+                    max: 100
                 }
             },
             plugins: {

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,14 +55,17 @@ public class WebController {
         List<SkillExamRecord> skillRecords = skillExamRecordRepository.findByUserOrderByProblemNumberAscAttemptNumberAsc(user);
 
         if (!writtenRecords.isEmpty()) {
-            WrittenExamRecord latestRecord = writtenRecords.get(writtenRecords.size() - 1);
+            // グラフ用には「最後に入力・更新した」レコードを取得
+            List<WrittenExamRecord> latestUpdated = writtenExamRecordRepository.findByUserOrderByUpdatedAtDesc(user);
+            WrittenExamRecord latestRecord = latestUpdated.isEmpty() ? writtenRecords.get(writtenRecords.size() - 1) : latestUpdated.get(0);
+            
             String weakest = analysisService.findWeakestCategory(latestRecord);
             Map<String, Double> percentages = analysisService.calculateAnalysis(latestRecord);
             
             model.addAttribute("latestRecord", latestRecord);
             model.addAttribute("weakestCategory", weakest);
-            model.addAttribute("chartData", percentages.values()); 
-            model.addAttribute("chartLabels", percentages.keySet());
+            model.addAttribute("chartData", new ArrayList<>(percentages.values())); 
+            model.addAttribute("chartLabels", new ArrayList<>(percentages.keySet()));
         } else {
             model.addAttribute("weakestCategory", "データがありません");
         }

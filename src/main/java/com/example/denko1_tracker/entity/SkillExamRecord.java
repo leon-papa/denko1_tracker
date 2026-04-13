@@ -2,6 +2,7 @@ package com.example.denko1_tracker.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "skill_exam_records")
@@ -26,4 +27,12 @@ public class SkillExamRecord {
 
     @Column(nullable = false)
     private Boolean isPassed;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

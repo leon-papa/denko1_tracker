@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SkillExamRecordRepository extends JpaRepository<SkillExamRecord, Long> {
     List<SkillExamRecord> findByUserOrderByProblemNumberAscAttemptNumberAsc(User user);
+    List<SkillExamRecord> findByUserOrderByUpdatedAtDesc(User user);
 }
