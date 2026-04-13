@@ -2,6 +2,7 @@ package com.example.denko1_tracker.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -23,4 +24,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SkillExamRecord> skillExamRecords;
+
+    private LocalDate writtenExamDate;
+    private LocalDate skillExamDate;
 }

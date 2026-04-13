@@ -24,6 +24,29 @@
     </header>
 
     <div class="dashboard-grid">
+        <!-- カウントダウンパネル -->
+        <section class="glass-panel" style="grid-column: 1 / -1; display: flex; justify-content: space-around; align-items: center; padding: 1.5rem;" th:if="${daysToWritten != null or daysToSkill != null}">
+            <div th:if="${daysToWritten != null}" style="text-align: center;">
+                <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">学科試験まで</p>
+                <h3 style="margin: 0.5rem 0; font-size: 1.5rem;">
+                    <span th:if="${daysToWritten > 0}">あと <strong th:text="${daysToWritten}" style="color: var(--accent); font-size: 2rem;"></strong> 日</span>
+                    <span th:if="${daysToWritten == 0}" style="color: #f87171;">本日試験日！</span>
+                    <span th:if="${daysToWritten < 0}" style="color: var(--text-muted);">試験終了</span>
+                </h3>
+                <p style="margin: 0; font-size: 0.8rem;" th:text="${#temporals.format(writtenDate, 'yyyy/MM/dd')}"></p>
+            </div>
+            <div style="width: 1px; height: 50px; background: var(--border-color);" th:if="${daysToWritten != null and daysToSkill != null}"></div>
+            <div th:if="${daysToSkill != null}" style="text-align: center;">
+                <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">技能試験まで</p>
+                <h3 style="margin: 0.5rem 0; font-size: 1.5rem;">
+                    <span th:if="${daysToSkill > 0}">あと <strong th:text="${daysToSkill}" style="color: var(--accent); font-size: 2rem;"></strong> 日</span>
+                    <span th:if="${daysToSkill == 0}" style="color: #f87171;">本日試験日！</span>
+                    <span th:if="${daysToSkill < 0}" style="color: var(--text-muted);">試験終了</span>
+                </h3>
+                <p style="margin: 0; font-size: 0.8rem;" th:text="${#temporals.format(skillDate, 'yyyy/MM/dd')}"></p>
+            </div>
+        </section>
+
         <!-- 弱点分析グラフ -->
         <section class="glass-panel chart-section">
             <h2>現在の弱点分析</h2>

@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +76,19 @@ public class WebController {
         model.addAttribute("skillRecords", skillRecords);
         model.addAttribute("username", user.getUsername());
         
+        // カウントダウン計算
+        LocalDate today = LocalDate.now();
+        if (user.getWrittenExamDate() != null) {
+            long days = today.until(user.getWrittenExamDate(), ChronoUnit.DAYS);
+            model.addAttribute("daysToWritten", days);
+            model.addAttribute("writtenDate", user.getWrittenExamDate());
+        }
+        if (user.getSkillExamDate() != null) {
+            long days = today.until(user.getSkillExamDate(), ChronoUnit.DAYS);
+            model.addAttribute("daysToSkill", days);
+            model.addAttribute("skillDate", user.getSkillExamDate());
+        }
+
         return "index";
     }
 
@@ -193,7 +208,32 @@ public class WebController {
     public String showSettings(Authentication auth, Model model) {
         User user = userRepository.findByUsername(auth.getName()).orElseThrow();
         model.addAttribute("username", user.getUsername());
+        model.addAttribute("writtenExamDate", user.getWrittenExamDate());
+        model.addAttribute("skillExamDate", user.getSkillExamDate());
         return "settings";
+    }
+
+
+    @PostMapping("/settings/exam-dates")
+    public String updateExamDates(@RequestParam(required = false) String writtenExamDate,
+                                  @RequestParam(required = false) String skillExamDate,
+                                  Authentication auth) {
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow();
+        
+        if (writtenExamDate != null && !writtenExamDate.isEmpty()) {
+            user.setWrittenExamDate(LocalDate.parse(writtenExamDate));
+        } else {
+            user.setWrittenExamDate(null);
+        }
+        
+        if (skillExamDate != null && !skillExamDate.isEmpty()) {
+            user.setSkillExamDate(LocalDate.parse(skillExamDate));
+        } else {
+            user.setSkillExamDate(null);
+        }
+        
+        userRepository.save(user);
+        return "redirect:/settings?datesUpdated";
     }
 
 

@@ -20,6 +20,28 @@
     <div th:if="${param.passwordError}" class="alert-error glass-panel">
         ❌ 現在のパスワードが正しくありません。
     </div>
+    <div th:if="${param.datesUpdated}" class="alert-success glass-panel">
+        ✅ 試験日を設定しました。
+    </div>
+
+
+    <!-- 試験日の設定 -->
+    <section class="glass-panel" style="margin-top: 2rem;">
+        <h2>📅 試験日の設定</h2>
+        <form th:action="@{/settings/exam-dates}" method="post">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>学科試験日</label>
+                    <input type="date" name="writtenExamDate" th:value="${writtenExamDate}">
+                </div>
+                <div class="form-group">
+                    <label>技能試験日</label>
+                    <input type="date" name="skillExamDate" th:value="${skillExamDate}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">試験日を保存する</button>
+        </form>
+    </section>
 
 
     <!-- パスワードの変更 -->
