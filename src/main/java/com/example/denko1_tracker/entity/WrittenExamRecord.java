@@ -22,12 +22,25 @@ public class WrittenExamRecord {
     @Column(nullable = false)
     private Integer attemptNumber;
 
+    private String examPeriod; // 上期, 下期, 午前, 午後
+
     private Integer calcScore;    // 計算問題
     private Integer memoryScore;  // 記憶問題
     private Integer diagramScore; // 図面・回路
     private Integer lawScore;     // 法令
 
     private LocalDateTime updatedAt;
+
+    public String getShortExamPeriod() {
+        if (examPeriod == null) return "";
+        return switch (examPeriod) {
+            case "上期" -> "上";
+            case "下期" -> "下";
+            case "午前" -> "前";
+            case "午後" -> "後";
+            default -> "";
+        };
+    }
 
     @PrePersist
     @PreUpdate

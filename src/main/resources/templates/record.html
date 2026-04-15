@@ -23,6 +23,16 @@
                 <input type="number" th:field="*{examYear}" required>
             </div>
             <div class="form-group">
+                <label>試験期 (上期/下期/午前/午後)</label>
+                <select th:field="*{examPeriod}">
+                    <option value="">(不明/なし)</option>
+                    <option value="上期">上期</option>
+                    <option value="下期">下期</option>
+                    <option value="午前">午前</option>
+                    <option value="午後">午後</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>何回目の挑戦ですか？ (1回目＝1)</label>
                 <input type="number" th:field="*{attemptNumber}" required>
             </div>

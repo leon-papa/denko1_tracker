@@ -71,7 +71,7 @@
             <table>
                 <tr><th>年度</th><th>挑戦</th><th>計算</th><th>機器</th><th>施工図</th><th>法令</th><th>操作</th></tr>
                 <tr th:each="r : ${writtenRecords}">
-                    <td th:text="${r.examYear}"></td>
+                    <td th:text="|${r.examYear}${r.getShortExamPeriod()}|"></td>
                     <td th:text="${r.attemptNumber} + '回目'"></td>
                     <td th:text="${r.calcScore}"></td>
                     <td th:text="${r.memoryScore}"></td>

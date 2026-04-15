@@ -169,10 +169,10 @@ public class WebController {
         StringBuilder sb = new StringBuilder();
         // UTF-8 BOM for Excel
         sb.append("\uFEFF");
-        sb.append("年度,回数,計算,機器,施工図,法令\n");
+        sb.append("年度,期,回数,計算,機器,施工図,法令\n");
         for (WrittenExamRecord r : records) {
-            sb.append(String.format("%s,%d,%d,%d,%d,%d\n",
-                r.getExamYear(), r.getAttemptNumber(), r.getCalcScore(), r.getMemoryScore(), r.getDiagramScore(), r.getLawScore()));
+            sb.append(String.format("%s,%s,%d,%d,%d,%d,%d\n",
+                r.getExamYear(), r.getExamPeriod() != null ? r.getExamPeriod() : "", r.getAttemptNumber(), r.getCalcScore(), r.getMemoryScore(), r.getDiagramScore(), r.getLawScore()));
         }
 
         return createCsvResponse(sb.toString(), "written_exam_records.csv");
