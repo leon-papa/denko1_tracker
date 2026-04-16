@@ -69,7 +69,7 @@
                 <a th:href="@{/download/written}" style="font-size: 0.8rem; color: var(--accent); text-decoration: none;">📥 CSV保存</a>
             </div>
             <table>
-                <tr><th>年度</th><th>挑戦</th><th>計算</th><th>機器</th><th>施工図</th><th>法令</th><th>操作</th></tr>
+                <tr><th>年度</th><th>挑戦</th><th>計算</th><th>機器</th><th>施工図</th><th>法令</th><th>合計</th><th>操作</th></tr>
                 <tr th:each="r : ${writtenRecords}">
                     <td th:text="|${r.examYear}${r.getShortExamPeriod()}|"></td>
                     <td th:text="${r.attemptNumber} + '回目'"></td>
@@ -77,6 +77,7 @@
                     <td th:text="${r.memoryScore}"></td>
                     <td th:text="${r.diagramScore}"></td>
                     <td th:text="${r.lawScore}"></td>
+                    <td th:text="${r.totalScore}" th:classappend="${r.totalScore < 60 ? 'over-time' : ''}"></td>
                     <td style="white-space: nowrap;">
                         <a th:href="@{/written/edit/{id}(id=${r.id})}" class="edit-btn" title="編集">✏️</a>
                         <form th:action="@{/written/delete/{id}(id=${r.id})}" method="post" onsubmit="return confirm('この記録を削除してもよろしいですか？');" style="display:inline;">

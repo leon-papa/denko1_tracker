@@ -42,6 +42,13 @@ public class WrittenExamRecord {
         };
     }
 
+    public int getTotalScore() {
+        return (calcScore != null ? calcScore : 0) +
+               (memoryScore != null ? memoryScore : 0) +
+               (diagramScore != null ? diagramScore : 0) +
+               (lawScore != null ? lawScore : 0);
+    }
+
     @PrePersist
     @PreUpdate
     protected void onUpdate() {
