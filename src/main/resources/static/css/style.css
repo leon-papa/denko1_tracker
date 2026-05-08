@@ -87,6 +87,9 @@ p { margin-top: 0.5rem; color: var(--text-muted); }
     max-width: 500px;
     margin: 0 auto;
     height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .weakness-alert {
@@ -131,6 +134,10 @@ th { color: var(--text-muted); font-size: 0.9rem; font-weight: normal;}
     color: white;
     box-sizing: border-box;
     font-size: 1rem;
+}
+.form-group select option {
+    background-color: #1e293b; /* ダークな背景色を明示的に指定 */
+    color: white;
 }
 .form-group input:focus, .form-group select:focus {
     outline: none;
