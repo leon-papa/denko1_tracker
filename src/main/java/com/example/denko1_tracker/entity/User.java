@@ -28,6 +28,6 @@ public class User {
     private LocalDate writtenExamDate;
     private LocalDate skillExamDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean showWrittenResults = true;
 }
