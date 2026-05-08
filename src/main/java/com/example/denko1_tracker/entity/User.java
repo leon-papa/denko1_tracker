@@ -27,4 +27,7 @@ public class User {
 
     private LocalDate writtenExamDate;
     private LocalDate skillExamDate;
+
+    @Column(nullable = false)
+    private boolean showWrittenResults = true;
 }

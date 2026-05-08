@@ -39,7 +39,13 @@
                     <input type="date" name="skillExamDate" th:value="${skillExamDate}">
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">試験日を保存する</button>
+            <div class="form-group" style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: normal;">
+                    <input type="checkbox" name="showWrittenResults" th:checked="${showWrittenResults}" style="width: auto;">
+                    ダッシュボードに筆記試験の結果を表示する
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">設定を保存する</button>
         </form>
     </section>
 

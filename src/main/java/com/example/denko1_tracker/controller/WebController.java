@@ -75,6 +75,7 @@ public class WebController {
         model.addAttribute("writtenRecords", writtenRecords);
         model.addAttribute("skillRecords", skillRecords);
         model.addAttribute("username", user.getUsername());
+        model.addAttribute("showWrittenResults", user.isShowWrittenResults());
         
         // カウントダウン計算
         LocalDate today = LocalDate.now();
@@ -210,6 +211,7 @@ public class WebController {
         model.addAttribute("username", user.getUsername());
         model.addAttribute("writtenExamDate", user.getWrittenExamDate());
         model.addAttribute("skillExamDate", user.getSkillExamDate());
+        model.addAttribute("showWrittenResults", user.isShowWrittenResults());
         return "settings";
     }
 
@@ -217,6 +219,7 @@ public class WebController {
     @PostMapping("/settings/exam-dates")
     public String updateExamDates(@RequestParam(required = false) String writtenExamDate,
                                   @RequestParam(required = false) String skillExamDate,
+                                  @RequestParam(defaultValue = "false") boolean showWrittenResults,
                                   Authentication auth) {
         User user = userRepository.findByUsername(auth.getName()).orElseThrow();
         
@@ -232,6 +235,7 @@ public class WebController {
             user.setSkillExamDate(null);
         }
         
+        user.setShowWrittenResults(showWrittenResults);
         userRepository.save(user);
         return "redirect:/settings?datesUpdated";
     }

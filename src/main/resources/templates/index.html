@@ -48,7 +48,7 @@
         </section>
 
         <!-- 弱点分析グラフ -->
-        <section class="glass-panel chart-section">
+        <section class="glass-panel chart-section" th:if="${showWrittenResults}">
             <h2>現在の弱点分析</h2>
             <div th:if="${weakestCategory != 'データがありません'}">
                 <p class="weakness-alert">
@@ -63,7 +63,7 @@
             </div>
         </section>
 
-        <section class="glass-panel table-section">
+        <section class="glass-panel table-section" th:if="${showWrittenResults}">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <h2>筆記試験スコア履歴</h2>
                 <a th:href="@{/download/written}" style="font-size: 0.8rem; color: var(--accent); text-decoration: none;">📥 CSV保存</a>
@@ -115,7 +115,7 @@
 </div>
 
 <!-- Thymeleafで計算したデータをJavaScriptに渡してグラフを描画 -->
-<script th:if="${weakestCategory != 'データがありません'}" th:inline="javascript">
+<script th:if="${showWrittenResults and weakestCategory != 'データがありません'}" th:inline="javascript">
     const labels = /*[[${chartLabels}]]*/ ['計算', '機器', '施工図', '法令'];
     const dataPoints = /*[[${chartData}]]*/ [0, 0, 0, 0];
 
