@@ -57,6 +57,9 @@
                 <div class="chart-container">
                     <canvas id="radarChart"></canvas>
                 </div>
+                <p style="text-align: center; margin-top: 1rem; font-size: 0.95rem; color: var(--text-muted);">
+                    <strong th:text="|${latestRecord.examYear}年度 ${latestRecord.examPeriod != null ? latestRecord.examPeriod : ''} ${latestRecord.attemptNumber}回目|"></strong>
+                </p>
             </div>
             <div th:if="${weakestCategory == 'データがありません'}">
                 <p style="color: #94a3b8; padding: 2rem;">過去問の記録がありません。「新規記録をつける」からデータを入力してください。</p>

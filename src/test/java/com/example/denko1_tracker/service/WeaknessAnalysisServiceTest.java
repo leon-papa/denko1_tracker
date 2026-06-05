@@ -23,16 +23,16 @@ class WeaknessAnalysisServiceTest {
     void testCalculateAnalysis() {
         WrittenExamRecord record = new WrittenExamRecord();
         record.setCalcScore(10);   // 10/20 = 50.0%
-        record.setMemoryScore(15); // 15/30 = 50.0%
-        record.setDiagramScore(24); // 24/30 = 80.0%
-        record.setLawScore(10);    // 10/20 = 50.0%
+        record.setMemoryScore(10); // 10/20 = 50.0%
+        record.setDiagramScore(40); // 40/50 = 80.0%
+        record.setLawScore(5);    // 5/10 = 50.0%
 
         Map<String, Double> result = service.calculateAnalysis(record);
 
-        assertEquals(50.0, result.get("計算問題"));
-        assertEquals(50.0, result.get("記憶問題"));
-        assertEquals(80.0, result.get("図面・回路"));
-        assertEquals(50.0, result.get("法令等"));
+        assertEquals(50.0, result.get("計算"));
+        assertEquals(50.0, result.get("機器"));
+        assertEquals(80.0, result.get("施工図"));
+        assertEquals(50.0, result.get("法令"));
     }
 
     @Test
@@ -40,13 +40,13 @@ class WeaknessAnalysisServiceTest {
     void testFindWeakestCategory() {
         WrittenExamRecord record = new WrittenExamRecord();
         record.setCalcScore(16);   // 80%
-        record.setMemoryScore(20); // 66.7%
-        record.setDiagramScore(15); // 50.0% (Weakest)
-        record.setLawScore(18);    // 90%
+        record.setMemoryScore(15); // 75%
+        record.setDiagramScore(25); // 50.0% (Weakest)
+        record.setLawScore(9);    // 90%
 
         String weakest = service.findWeakestCategory(record);
 
-        assertEquals("図面・回路", weakest);
+        assertEquals("施工図", weakest);
     }
 
     @Test
@@ -60,7 +60,7 @@ class WeaknessAnalysisServiceTest {
 
         Map<String, Double> result = service.calculateAnalysis(record);
 
-        assertEquals(0.0, result.get("計算問題"));
-        assertEquals("計算問題", service.findWeakestCategory(record)); // 最初に見つかった最小値
+        assertEquals(0.0, result.get("計算"));
+        assertEquals("計算", service.findWeakestCategory(record)); // 最初に見つかった最小値
     }
 }

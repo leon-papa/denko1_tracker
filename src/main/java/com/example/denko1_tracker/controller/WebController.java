@@ -28,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,13 +54,15 @@ public class WebController {
     public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
 
-        List<WrittenExamRecord> writtenRecords = writtenExamRecordRepository.findByUserOrderByExamYearAscAttemptNumberAsc(user);
+        List<WrittenExamRecord> writtenRecords = getSortedWrittenRecords(user);
         List<SkillExamRecord> skillRecords = skillExamRecordRepository.findByUserOrderByProblemNumberAscAttemptNumberAsc(user);
 
         if (!writtenRecords.isEmpty()) {
             // グラフ用には「最後に入力・更新した」レコードを取得
             List<WrittenExamRecord> latestUpdated = writtenExamRecordRepository.findByUserOrderByUpdatedAtDesc(user);
-            WrittenExamRecord latestRecord = latestUpdated.isEmpty() ? writtenRecords.get(writtenRecords.size() - 1) : latestUpdated.get(0);
+            WrittenExamRecord latestRecord = latestUpdated.isEmpty() ? 
+                writtenRecords.stream().max(Comparator.comparing(r -> r.getUpdatedAt() != null ? r.getUpdatedAt() : java.time.LocalDateTime.MIN)).orElse(writtenRecords.get(0)) : 
+                latestUpdated.get(0);
             
             String weakest = analysisService.findWeakestCategory(latestRecord);
             Map<String, Double> percentages = analysisService.calculateAnalysis(latestRecord);
@@ -165,7 +168,7 @@ public class WebController {
     @GetMapping("/download/written")
     public ResponseEntity<byte[]> downloadWrittenCsv(@AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
-        List<WrittenExamRecord> records = writtenExamRecordRepository.findByUserOrderByExamYearAscAttemptNumberAsc(user);
+        List<WrittenExamRecord> records = getSortedWrittenRecords(user);
 
         StringBuilder sb = new StringBuilder();
         // UTF-8 BOM for Excel
@@ -262,5 +265,33 @@ public class WebController {
         SecurityContextHolder.clearContext();
         request.getSession().invalidate();
         return "redirect:/login?accountDeleted";
+    }
+
+    List<WrittenExamRecord> getSortedWrittenRecords(User user) {
+        List<WrittenExamRecord> records = new ArrayList<>(writtenExamRecordRepository.findByUser(user));
+        records.sort(Comparator
+            .comparing(WrittenExamRecord::getExamYear, Comparator.reverseOrder())
+            .thenComparing((r1, r2) -> {
+                String p1 = r1.getExamPeriod() != null ? r1.getExamPeriod() : "";
+                String p2 = r2.getExamPeriod() != null ? r2.getExamPeriod() : "";
+                
+                int order1 = getPeriodOrder(p1);
+                int order2 = getPeriodOrder(p2);
+                return Integer.compare(order1, order2);
+            })
+            .thenComparing(WrittenExamRecord::getAttemptNumber)
+        );
+        return records;
+    }
+
+    int getPeriodOrder(String period) {
+        if (period == null) return 5;
+        return switch (period) {
+            case "上期" -> 1;
+            case "下期" -> 2;
+            case "午前" -> 3;
+            case "午後" -> 4;
+            default -> 5;
+        };
     }
 }
