@@ -103,7 +103,8 @@
                     <td th:text="${s.attemptNumber} + '回目'"></td>
                     <td th:text="${s.completionTimeMinutes} + ' 分'" th:classappend="${s.completionTimeMinutes <= 60 ? 'good-time' : 'over-time'}"></td>
                     <td>
-                        <span th:text="${s.isPassed ? '合格' : '欠陥あり'}" th:class="${s.isPassed ? 'pass' : 'fail'}"></span>
+                        <span th:if="${s.completionTimeMinutes > 60}" class="fail">時間切れ</span>
+                        <span th:unless="${s.completionTimeMinutes > 60}" th:text="${s.isPassed ? '合格' : '欠陥あり'}" th:class="${s.isPassed ? 'pass' : 'fail'}"></span>
                     </td>
                     <td style="white-space: nowrap;">
                         <a th:href="@{/skill/edit/{id}(id=${s.id})}" class="edit-btn" title="編集">✏️</a>
