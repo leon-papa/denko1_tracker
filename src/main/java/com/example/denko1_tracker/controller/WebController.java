@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -81,7 +82,7 @@ public class WebController {
         model.addAttribute("showWrittenResults", user.isShowWrittenResults());
         
         // カウントダウン計算
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Tokyo"));
         if (user.getWrittenExamDate() != null) {
             long days = today.until(user.getWrittenExamDate(), ChronoUnit.DAYS);
             model.addAttribute("daysToWritten", days);

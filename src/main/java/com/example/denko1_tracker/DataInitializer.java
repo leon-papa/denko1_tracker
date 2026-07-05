@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Component
 @Profile("!prod")
@@ -42,8 +43,8 @@ public class DataInitializer implements CommandLineRunner {
             testUser.setUsername("user");
             testUser.setPassword(passwordEncoder.encode("password"));
             testUser.setShowWrittenResults(true);
-            testUser.setWrittenExamDate(LocalDate.now().plusDays(30)); // 30日後
-            testUser.setSkillExamDate(LocalDate.now().plusDays(60));   // 60日後
+            testUser.setWrittenExamDate(LocalDate.now(ZoneId.of("Asia/Tokyo")).plusDays(30)); // 30日後
+            testUser.setSkillExamDate(LocalDate.now(ZoneId.of("Asia/Tokyo")).plusDays(60));   // 60日後
             userRepository.save(testUser);
 
             // 2. 筆記試験レコードの挿入
@@ -76,7 +77,7 @@ public class DataInitializer implements CommandLineRunner {
         record.setDiagramScore(diagram);
         record.setLawScore(law);
         // updatedAt を少しずらして最新データを確定しやすくする
-        record.setUpdatedAt(LocalDateTime.now().plusSeconds(offsetSeconds));
+        record.setUpdatedAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")).plusSeconds(offsetSeconds));
         writtenExamRecordRepository.save(record);
     }
 

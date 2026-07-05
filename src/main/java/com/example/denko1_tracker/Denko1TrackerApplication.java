@@ -1,10 +1,17 @@
 package com.example.denko1_tracker;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.TimeZone;
 
 @SpringBootApplication
 public class Denko1TrackerApplication {
+
+	@PostConstruct
+	public void init() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"));
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Denko1TrackerApplication.class, args);
